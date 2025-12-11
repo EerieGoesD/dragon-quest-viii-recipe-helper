@@ -9,6 +9,15 @@
 
     <link href="css/main.css" rel="stylesheet">
     <script src="js/main.js" defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HKB92KJKRW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HKB92KJKRW');
+    </script>
 </head>
 <body>
 <div class="container">
@@ -20,18 +29,24 @@
         </div>
     </div>
 
-    <!-- Alerts -->
+    <!-- Welcome Alert -->
     <div class="alert alert-info">
-        Track your <strong>Alchemy Pot</strong> progress in Dragon Quest VIII.
-        Tick which <strong>items</strong> you currently own and which <strong>recipes</strong> you have already created.
+        <strong>Welcome!</strong>
+        I'm <a href="https://linktr.ee/eeriegoesd" target="_blank">Eerie Goes D</a>, and welcome to this simple
+        Dragon Quest VIII Alchemy Tracker.
+        Feel free to leave any feedback by reaching out to me via email at
+        <a href="mailto:eeriegoesd@gmail.com">eeriegoesd@gmail.com</a>
+        or just add me on
+        <a href="https://steamcommunity.com/profiles/76561198217097379/" target="_blank">Steam</a>!
     </div>
 
+    <!-- Warning Alert -->
     <div class="alert alert-warning">
-        Progress is stored in <strong>this browser</strong> using local storage. If you clear site data, your progress is lost.
-        Use <strong>Export / Import</strong> to back up your state.
+        <strong>Warning!</strong> Your progress is automatically saved in this browser, but it will be lost if you
+        delete its cookies. You can save/load your state by using the import/export progress buttons.
     </div>
 
-    <!-- Export / Import -->
+    <!-- Progress Management Buttons -->
     <div class="progress-buttons">
         <button id="export-state-btn" class="btn btn-export">Export Progress</button>
         <button class="btn btn-import">
@@ -45,8 +60,11 @@
         <h4>Quick Navigation:</h4>
         <ul>
             <li><a href="#inventory-panel">Inventory</a></li>
+            <li><a href="#all-recipes-panel">All Recipes</a></li>
             <li><a href="#craftable-panel">Craftable Recipes</a></li>
-            <li><a href="#all-recipes-panel">All Recipes / Your List</a></li>
+            <li><a href="#craftable-not-created-panel">Craftable (Not Created)</a></li>
+            <li><a href="#your-recipes-panel">Your Recipe List</a></li>
+            <li><a href="#optimizer-panel">Equipment Optimizer</a></li>
         </ul>
     </div>
 
@@ -62,22 +80,33 @@
         <section class="panel inventory-panel" id="inventory-panel">
             <h2>Inventory – Items You Own</h2>
             <p class="small-text">
-                Tick every item you currently have (either in inventory or alchemy base).
-                The tracker will compute which recipes are craftable.
+                Tick every item you currently have (equipment + items). The tracker will compute which
+                recipes are craftable and the optimizer will use the equipped gear to pick the best loadout.
             </p>
             <div id="inventory-list" class="inventory-list">
                 <!-- Filled by JS -->
             </div>
         </section>
 
-        <!-- Recipes -->
+        <!-- Recipes + Optimizer -->
         <section class="panel recipes-panel" id="all-recipes-panel">
             <h2>All Alchemy Recipes</h2>
 
             <p class="small-text">
                 Columns: Category, Result item, Ingredients, Craftable?, Created.
-                When you tick <strong>Created</strong>, the row turns green and appears in <strong>Your Recipe List</strong>.
+                Use the filters below to show only equipment recipes, only item recipes, or both.
             </p>
+
+            <div class="recipe-filters">
+                <label>
+                    <input type="checkbox" id="filter-equipment" checked>
+                    Equipment
+                </label>
+                <label>
+                    <input type="checkbox" id="filter-items" checked>
+                    Items (Cheese / Medicine / Other)
+                </label>
+            </div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -96,6 +125,7 @@
                 </table>
             </div>
 
+            <!-- Craftable recipes (all) -->
             <div id="craftable-panel">
                 <h3>Craftable Recipes (based on current inventory)</h3>
                 <p id="craftable-summary" class="small-text">0 / 0 recipes craftable.</p>
@@ -115,6 +145,29 @@
                 </div>
             </div>
 
+            <!-- Craftable recipes not created -->
+            <div id="craftable-not-created-panel">
+                <h3>Craftable Recipes (that you haven't created before)</h3>
+                <p id="craftable-not-created-summary" class="small-text">
+                    0 craftable recipes that are not yet created.
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Result</th>
+                            <th>Ingredients</th>
+                        </tr>
+                        </thead>
+                        <tbody id="craftable-not-created-body">
+                        <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Your recipe list -->
             <div id="your-recipes-panel">
                 <h3>Your Recipe List (already created)</h3>
                 <p class="small-text">
@@ -124,8 +177,23 @@
                     <!-- Filled by JS -->
                 </ul>
             </div>
-        </section>
 
+            <!-- Equipment Optimizer -->
+            <section class="optimizer-panel" id="optimizer-panel">
+                <h2>Equipment Optimizer</h2>
+                <p class="small-text">
+                    Tick all <strong>equipment</strong> you own in the Inventory on the left
+                    (weapons, armour, shields, helmets), then click the button below.
+                    The calculator simply picks the highest Attack weapon and the highest Defence
+                    armour/shield/helmet each character can equip from your inventory.
+                </p>
+                <button id="optimizer-run-btn" class="btn btn-export">Calculate optimal equipment</button>
+                <div id="optimizer-output" class="optimizer-output">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+
+        </section>
     </div><!-- /.layout -->
 </div><!-- /.container -->
 </body>
