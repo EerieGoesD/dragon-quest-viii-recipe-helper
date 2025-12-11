@@ -1,0 +1,268 @@
+/* Basic reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    margin-top: 20px;
+    padding: 0 20px 40px 20px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.navbar-inner {
+    padding: 10px 20px;
+}
+
+.navbar h1 {
+    color: #fff;
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+    color: #31708f;
+}
+
+.alert-warning {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* Overall progress */
+.overall-progress {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-export {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-import {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.import-label {
+    cursor: pointer;
+}
+
+.progress-buttons {
+    margin-bottom: 15px;
+}
+
+/* Quick navigation */
+.quick-navigation {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.quick-navigation h4 {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.quick-navigation ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.quick-navigation li {
+    display: inline;
+}
+
+.quick-navigation a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 13px;
+}
+
+.quick-navigation a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.panel {
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.inventory-panel {
+    flex: 1;
+    min-width: 260px;
+    max-width: 320px;
+}
+
+.recipes-panel {
+    flex: 3;
+}
+
+/* Headings */
+h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.small-text {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Inventory list */
+.inventory-list {
+    max-height: 520px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 8px;
+    background-color: #fafafa;
+}
+
+.inventory-item {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+/* Tables */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.table th {
+    text-align: left;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 8px;
+    font-size: 13px;
+}
+
+.table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    vertical-align: top;
+}
+
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th {
+    background-color: #f2f2f2;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Craftable / created styles */
+.craftable-row {
+    background-color: #fffbe5;
+}
+
+.created-row {
+    background-color: #c7f7c1 !important;
+}
+
+.craftable-yes {
+    font-weight: bold;
+    color: #155724;
+}
+
+.craftable-no {
+    color: #888;
+}
+
+/* Created list */
+.created-list {
+    list-style: disc;
+    padding-left: 20px;
+    font-size: 13px;
+}
+
+.created-list li {
+    margin-bottom: 3px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .inventory-panel {
+        max-width: none;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
