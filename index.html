@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dragon Quest VIII – Alchemy Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inventory and recipe tracker for Dragon Quest VIII Alchemy Pot combinations.">
+    <meta name="author" content="Eerie Goes D">
+
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+<div class="container">
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <h1>Dragon Quest VIII – Alchemy Tracker</h1>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alert alert-info">
+        Track your <strong>Alchemy Pot</strong> progress in Dragon Quest VIII.
+        Tick which <strong>items</strong> you currently own and which <strong>recipes</strong> you have already created.
+    </div>
+
+    <div class="alert alert-warning">
+        Progress is stored in <strong>this browser</strong> using local storage. If you clear site data, your progress is lost.
+        Use <strong>Export / Import</strong> to back up your state.
+    </div>
+
+    <!-- Export / Import -->
+    <div class="progress-buttons">
+        <button id="export-state-btn" class="btn btn-export">Export Progress</button>
+        <button class="btn btn-import">
+            <label for="import-state-input" class="import-label">Import Progress...</label>
+        </button>
+        <input id="import-state-input" type="file" accept=".json" style="display:none;">
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="quick-navigation">
+        <h4>Quick Navigation:</h4>
+        <ul>
+            <li><a href="#inventory-panel">Inventory</a></li>
+            <li><a href="#craftable-panel">Craftable Recipes</a></li>
+            <li><a href="#all-recipes-panel">All Recipes / Your List</a></li>
+        </ul>
+    </div>
+
+    <!-- Overall summary -->
+    <div id="overall-summary" class="overall-progress">
+        0 / 0 recipes created – 0 / 0 recipes currently craftable
+    </div>
+
+    <!-- Main layout -->
+    <div class="layout">
+
+        <!-- Inventory -->
+        <section class="panel inventory-panel" id="inventory-panel">
+            <h2>Inventory – Items You Own</h2>
+            <p class="small-text">
+                Tick every item you currently have (either in inventory or alchemy base).
+                The tracker will compute which recipes are craftable.
+            </p>
+            <div id="inventory-list" class="inventory-list">
+                <!-- Filled by JS -->
+            </div>
+        </section>
+
+        <!-- Recipes -->
+        <section class="panel recipes-panel" id="all-recipes-panel">
+            <h2>All Alchemy Recipes</h2>
+
+            <p class="small-text">
+                Columns: Category, Result item, Ingredients, Craftable?, Created.
+                When you tick <strong>Created</strong>, the row turns green and appears in <strong>Your Recipe List</strong>.
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Result</th>
+                        <th>Ingredients</th>
+                        <th>Craftable?</th>
+                        <th>Created</th>
+                    </tr>
+                    </thead>
+                    <tbody id="recipes-body">
+                    <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="craftable-panel">
+                <h3>Craftable Recipes (based on current inventory)</h3>
+                <p id="craftable-summary" class="small-text">0 / 0 recipes craftable.</p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Result</th>
+                            <th>Ingredients</th>
+                        </tr>
+                        </thead>
+                        <tbody id="craftable-body">
+                        <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="your-recipes-panel">
+                <h3>Your Recipe List (already created)</h3>
+                <p class="small-text">
+                    This mirrors the "Created" ticks above. Useful as a quick checklist of what you've done.
+                </p>
+                <ul id="created-list" class="created-list">
+                    <!-- Filled by JS -->
+                </ul>
+            </div>
+        </section>
+
+    </div><!-- /.layout -->
+</div><!-- /.container -->
+</body>
+</html>
