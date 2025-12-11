@@ -167,6 +167,7 @@ h3 {
     margin-bottom: 8px;
 }
 
+/* Small text */
 .small-text {
     font-size: 13px;
     color: #555;
@@ -250,6 +251,29 @@ h3 {
 
 .created-list li {
     margin-bottom: 3px;
+}
+
+/* Recipe filters */
+.recipe-filters {
+    margin: 8px 0 12px 0;
+    font-size: 13px;
+}
+
+.recipe-filters label {
+    margin-right: 15px;
+}
+
+/* Optimizer */
+.optimizer-panel {
+    margin-top: 25px;
+}
+
+.optimizer-output {
+    margin-top: 10px;
+}
+
+.optimizer-output .table {
+    margin-top: 10px;
 }
 
 /* Responsive */
