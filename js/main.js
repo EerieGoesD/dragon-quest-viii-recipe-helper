@@ -921,6 +921,32 @@ document.addEventListener("DOMContentLoaded", () => {
     loadInventoryState();
     loadCreatedState();
 
+    // Bulk inventory buttons
+    const tickAllBtn = document.getElementById("inventory-tick-all");
+    const untickAllBtn = document.getElementById("inventory-untick-all");
+
+    if (tickAllBtn) {
+        tickAllBtn.addEventListener("click", () => {
+            document.querySelectorAll(".inventory-checkbox").forEach(cb => {
+                cb.checked = true;
+            });
+            saveInventory();
+            updateCraftable();
+            runOptimizer(false);
+        });
+    }
+
+    if (untickAllBtn) {
+        untickAllBtn.addEventListener("click", () => {
+            document.querySelectorAll(".inventory-checkbox").forEach(cb => {
+                cb.checked = false;
+            });
+            saveInventory();
+            updateCraftable();
+            runOptimizer(false);
+        });
+    }
+
     // Initial renders
     renderCreatedStyles();
     updateCreatedList();
