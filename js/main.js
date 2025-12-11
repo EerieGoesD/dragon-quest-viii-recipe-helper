@@ -1,5 +1,7 @@
-// ---------------- DATA ----------------
+// ---------------- RECIPE DATA ----------------
 
+// Equipment recipes (Weapon / Armour / Shield / Headgear / Accessory)
+// + Item recipes (Cheese / Medicine / Item)
 const recipes = [
     // Weapons
     { category: "Weapon", result: "Assassin's dagger", ingredients: ["Eagle dagger", "Poison needle"] },
@@ -167,15 +169,322 @@ const recipes = [
     { category: "Accessory", result: "Skull ring", ingredients: ["Sorcerer's ring", "Devil's tail"] },
     { category: "Accessory", result: "Sorcerer's ring", ingredients: ["Skull ring", "Saint's ashes", "Saint's ashes"] },
     { category: "Accessory", result: "Strength ring", ingredients: ["Prayer ring", "Seed of strength"] },
-    { category: "Accessory", result: "Titan belt", ingredients: ["Leather kilt", "Strength ring"] }
+    { category: "Accessory", result: "Titan belt", ingredients: ["Leather kilt", "Strength ring"] },
+
+    // ---------- ITEMS: CHEESE ----------
+    { category: "Cheese", result: "Angel cheese", ingredients: ["Fresh milk", "Premium mould", "Yggdrasil dew"] },
+    { category: "Cheese", result: "C-c-cold cheese", ingredients: ["Dragon dung", "Cold cheese", "Premium mould"] },
+    { category: "Cheese", result: "Chilly cheese", ingredients: ["Cool cheese", "Waterweed mould"] },
+    { category: "Cheese", result: "Chunky cheese", ingredients: ["Plain cheese", "Magic water"] },
+    { category: "Cheese", result: "Cold cheese", ingredients: ["Chilly cheese", "Waterweed mould", "Waterweed mould"] },
+    { category: "Cheese", result: "Cool cheese", ingredients: ["Plain cheese", "Waterweed mould"] },
+    { category: "Cheese", result: "Cured cheese", ingredients: ["Fresh milk", "Premium mould", "Amor seco essence"] },
+    { category: "Cheese", result: "Hard cheese", ingredients: ["Plain cheese", "Rock salt"] },
+    { category: "Cheese", result: "Highly-strung cheese", ingredients: ["Super spicy cheese", "Cold cheese", "Rock salt"] },
+    { category: "Cheese", result: "Mild cheese", ingredients: ["Plain cheese", "Amor seco essence"] },
+    { category: "Cheese", result: "Plain cheese", ingredients: ["Fresh milk", "Rennet powder"] },
+    { category: "Cheese", result: "Scorching cheese", ingredients: ["Super spicy cheese", "Premium mould", "Dragon dung"] },
+    { category: "Cheese", result: "Soft cheese", ingredients: ["Fresh milk", "Rennet powder", "Rock salt"] },
+    { category: "Cheese", result: "Spicy cheese", ingredients: ["Plain cheese", "Red mould"] },
+    { category: "Cheese", result: "Super spicy cheese", ingredients: ["Spicy cheese", "Nook grass"] },
+
+    // ---------- ITEMS: MEDICINE ----------
+    { category: "Medicine", result: "Amor seco essence", ingredients: ["Holy water", "Strong medicine"] },
+    { category: "Medicine", result: "Elfin elixir", ingredients: ["Yggdrasil dew", "Magic water"] },
+    { category: "Medicine", result: "Greater panacea", ingredients: ["Special medicine", "Special medicine", "Special medicine"] },
+    { category: "Medicine", result: "Lesser panacea", ingredients: ["Special medicine", "Special medicine"] },
+    { category: "Medicine", result: "Magic water", ingredients: ["Holy water", "Seed of magic"] },
+    { category: "Medicine", result: "Moon's mercy", ingredients: ["Moonwort bulb", "Moonwort bulb", "Moonwort bulb"] },
+    { category: "Medicine", result: "Rose-root", ingredients: ["Medicinal herb", "Medicinal herb", "Medicinal herb"] },
+    { category: "Medicine", result: "Rose-wort", ingredients: ["Medicinal herb", "Medicinal herb", "Moonwort bulb"] },
+    { category: "Medicine", result: "Special antidote", ingredients: ["Medicinal herb", "Antidotal herb", "Antidotal herb"] },
+    { category: "Medicine", result: "Special medicine", ingredients: ["Strong medicine", "Strong medicine"] },
+    { category: "Medicine", result: "Strong antidote", ingredients: ["Medicinal herb", "Antidotal herb"] },
+    { category: "Medicine", result: "Strong medicine", ingredients: ["Medicinal herb", "Medicinal herb"] },
+    { category: "Medicine", result: "Yggdrasil dew", ingredients: ["Yggdrasil leaf", "Magic water"] },
+
+    // ---------- ITEMS: OTHER ----------
+    { category: "Item", result: "Chimaera wing", ingredients: ["Wing of bat", "Wing of bat"] },
+    { category: "Item", result: "Holy water", ingredients: ["Amor seco essence", "Rock salt"] },
+    { category: "Item", result: "Mystifying mixture", ingredients: ["Holy water", "Wing of bat", "Cowpat"] },
+    { category: "Item", result: "Premium mould", ingredients: ["Red mould", "Waterweed mould", "Yggdrasil leaf"] },
+    { category: "Item", result: "Sage's stone", ingredients: ["Gold nugget", "Orichalcum", "Yggdrasil dew"] },
+    { category: "Item", result: "Thief's Key", ingredients: ["Iron nail", "Bronze knife"] },
+    { category: "Item", result: "Timbrel of tension", ingredients: ["Sun crown", "Magic beast hide", "Tough guy tattoo"] }
 ];
+
+// ---------------- EQUIPMENT STATS FOR OPTIMIZER ----------------
+
+const equipmentStats = [
+    // ---------- WEAPONS ----------
+    // Swords
+    { name: "Cypress stick", slot: "weapon", stat: 4, characters: ["Hero"] },
+    { name: "Soldier's sword", slot: "weapon", stat: 8, characters: ["Hero"] },
+    { name: "Stone sword", slot: "weapon", stat: 12, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Copper sword", slot: "weapon", stat: 13, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Rapier", slot: "weapon", stat: 17, characters: ["Angelo"] },
+    { name: "Ye Olde Sword of Erdrick", slot: "weapon", stat: 20, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Steel broadsword", slot: "weapon", stat: 35, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Templar's sword", slot: "weapon", stat: 36, characters: ["Angelo"] },
+    { name: "Falcon blade", slot: "weapon", stat: 37, characters: ["Hero", "Angelo", "Jessica", "Red"] },
+    { name: "Platinum sword", slot: "weapon", stat: 40, characters: ["Hero", "Angelo", "Jessica", "Red"] },
+    { name: "Dream blade", slot: "weapon", stat: 43, characters: ["Hero", "Angelo", "Jessica", "Red"] },
+    { name: "Rusty old sword", slot: "weapon", stat: 45, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Holy silver rapier", slot: "weapon", stat: 54, characters: ["Angelo"] },
+    { name: "Zombiesbane", slot: "weapon", stat: 54, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Über falcon blade", slot: "weapon", stat: 55, characters: ["Hero", "Angelo", "Jessica", "Red"] },
+    { name: "Bastard sword", slot: "weapon", stat: 61, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Fallen angel rapier", slot: "weapon", stat: 61, characters: ["Angelo"] },
+    { name: "Zombie slayer", slot: "weapon", stat: 65, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Dragonsbane", slot: "weapon", stat: 72, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Double-edged sword", slot: "weapon", stat: 76, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Über double-edge", slot: "weapon", stat: 76, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Mercury's rapier", slot: "weapon", stat: 78, characters: ["Angelo"] },
+    { name: "Miracle sword", slot: "weapon", stat: 80, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Dragon slayer", slot: "weapon", stat: 83, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Blizzard blade", slot: "weapon", stat: 90, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Über miracle sword", slot: "weapon", stat: 95, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Hell sabre", slot: "weapon", stat: 99, characters: ["Angelo"] },
+    { name: "Dragovian sword", slot: "weapon", stat: 107, characters: ["Hero"] },
+    { name: "Shamshir of light", slot: "weapon", stat: 110, characters: ["Angelo"] },
+    { name: "Demonsbane", slot: "weapon", stat: 116, characters: ["Angelo"] },
+    { name: "Liquid metal sword", slot: "weapon", stat: 118, characters: ["Hero", "Angelo", "Jessica", "Red"] },
+    { name: "Erdrick's sword", slot: "weapon", stat: 120, characters: ["Hero", "Jessica", "Red"] },
+    { name: "Dragovian king sword", slot: "weapon", stat: 137, characters: ["Hero"] },
+
+    // Boomerangs
+    { name: "Boomerang", slot: "weapon", stat: 19, characters: ["Hero", "Morrie"] },
+    { name: "Edged boomerang", slot: "weapon", stat: 27, characters: ["Hero", "Morrie"] },
+    { name: "Reinforced boomerang", slot: "weapon", stat: 32, characters: ["Hero", "Morrie"] },
+    { name: "Razor wing boomerang", slot: "weapon", stat: 42, characters: ["Hero", "Morrie"] },
+    { name: "Swallowtail", slot: "weapon", stat: 53, characters: ["Hero", "Morrie"] },
+    { name: "Flametang boomerang", slot: "weapon", stat: 63, characters: ["Hero", "Morrie"] },
+    { name: "Black Buzzard", slot: "weapon", stat: 71, characters: ["Hero", "Morrie"] },
+    { name: "Metal wing boomerang", slot: "weapon", stat: 90, characters: ["Hero", "Morrie"] },
+
+    // Spears
+    { name: "Golden gar", slot: "weapon", stat: 21, characters: ["Hero"] },
+    { name: "Iron lance", slot: "weapon", stat: 24, characters: ["Hero"] },
+    { name: "Long spear", slot: "weapon", stat: 30, characters: ["Hero"] },
+    { name: "Holy lance", slot: "weapon", stat: 39, characters: ["Hero"] },
+    { name: "Battle fork", slot: "weapon", stat: 42, characters: ["Hero"] },
+    { name: "Partisan", slot: "weapon", stat: 44, characters: ["Hero"] },
+    { name: "Sandstorm spear", slot: "weapon", stat: 67, characters: ["Hero"] },
+    { name: "Demon spear", slot: "weapon", stat: 86, characters: ["Hero"] },
+    { name: "Hero spear", slot: "weapon", stat: 100, characters: ["Hero"] },
+    { name: "Metal king spear", slot: "weapon", stat: 120, characters: ["Hero"] },
+
+    // Axes
+    { name: "Stone axe", slot: "weapon", stat: 20, characters: ["Yangus"] },
+    { name: "Golden axe", slot: "weapon", stat: 27, characters: ["Yangus"] },
+    { name: "Iron axe", slot: "weapon", stat: 38, characters: ["Yangus"] },
+    { name: "Battle axe", slot: "weapon", stat: 45, characters: ["Yangus"] },
+    { name: "Bandit axe", slot: "weapon", stat: 55, characters: ["Yangus"] },
+    { name: "Moon axe", slot: "weapon", stat: 60, characters: ["Yangus"] },
+    { name: "King axe", slot: "weapon", stat: 80, characters: ["Yangus"] },
+    { name: "Bad axe", slot: "weapon", stat: 90, characters: ["Yangus"] },
+    { name: "Conqueror's axe", slot: "weapon", stat: 103, characters: ["Yangus"] },
+
+    // Clubs / Hammers
+    { name: "Oaken club", slot: "weapon", stat: 7, characters: ["Yangus", "Morrie"] },
+    { name: "Giant mallet", slot: "weapon", stat: 13, characters: ["Yangus", "Morrie"] },
+    { name: "Honking hammer", slot: "weapon", stat: 25, characters: ["Yangus", "Morrie"] },
+    { name: "Sledgehammer", slot: "weapon", stat: 33, characters: ["Yangus", "Morrie"] },
+    { name: "War hammer", slot: "weapon", stat: 51, characters: ["Yangus", "Morrie"] },
+    { name: "Über war hammer", slot: "weapon", stat: 69, characters: ["Yangus", "Morrie"] },
+    { name: "Megaton hammer", slot: "weapon", stat: 108, characters: ["Yangus", "Morrie"] },
+
+    // Scythes
+    { name: "Candy cane", slot: "weapon", stat: 1, characters: ["Yangus"] },
+    { name: "Farmer's scythe", slot: "weapon", stat: 28, characters: ["Yangus"] },
+    { name: "Steel scythe", slot: "weapon", stat: 42, characters: ["Yangus"] },
+    { name: "Hell scythe", slot: "weapon", stat: 65, characters: ["Yangus"] },
+    { name: "Bardiche of binding", slot: "weapon", stat: 83, characters: ["Yangus"] },
+    { name: "Heavy hatchet", slot: "weapon", stat: 110, characters: ["Yangus"] },
+
+    // Knives
+    { name: "Poison needle", slot: "weapon", stat: 0, characters: ["Jessica", "Red"] },
+    { name: "Bronze knife", slot: "weapon", stat: 9, characters: ["Jessica", "Red"] },
+    { name: "Dagger", slot: "weapon", stat: 18, characters: ["Jessica", "Red"] },
+    { name: "Poison moth knife", slot: "weapon", stat: 29, characters: ["Jessica", "Red"] },
+    { name: "Falcon knife", slot: "weapon", stat: 34, characters: ["Jessica", "Red"] },
+    { name: "Assassin's dagger", slot: "weapon", stat: 37, characters: ["Jessica", "Red"] },
+    { name: "Eagle dagger", slot: "weapon", stat: 39, characters: ["Jessica", "Red"] },
+    { name: "Icicle dirk", slot: "weapon", stat: 52, characters: ["Jessica", "Red"] },
+    { name: "Imp knife", slot: "weapon", stat: 52, characters: ["Jessica", "Red"] },
+    { name: "Sword breaker", slot: "weapon", stat: 56, characters: ["Jessica", "Red"] },
+    { name: "Dread dagger", slot: "weapon", stat: 78, characters: ["Jessica", "Red"] },
+
+    // Whips
+    { name: "Leather whip", slot: "weapon", stat: 6, characters: ["Jessica", "Red"] },
+    { name: "Thorn whip", slot: "weapon", stat: 14, characters: ["Jessica", "Red"] },
+    { name: "Snakeskin whip", slot: "weapon", stat: 23, characters: ["Jessica", "Red"] },
+    { name: "Chain whip", slot: "weapon", stat: 32, characters: ["Jessica", "Red"] },
+    { name: "Dragontail whip", slot: "weapon", stat: 47, characters: ["Jessica", "Red"] },
+    { name: "Spiked steel whip", slot: "weapon", stat: 62, characters: ["Jessica", "Red"] },
+    { name: "Wizardly whip", slot: "weapon", stat: 68, characters: ["Jessica", "Red"] },
+    { name: "Demon whip", slot: "weapon", stat: 72, characters: ["Jessica", "Red"] },
+    { name: "Scourge whip", slot: "weapon", stat: 99, characters: ["Jessica", "Red"] },
+    { name: "Gringham whip", slot: "weapon", stat: 127, characters: ["Jessica", "Red"] },
+
+    // Staves / Maces
+    { name: "Wizard's staff", slot: "weapon", stat: 15, characters: ["Angelo", "Jessica"] },
+    { name: "Slime stick", slot: "weapon", stat: 22, characters: ["Jessica", "Angelo"] },
+    { name: "Lightning staff", slot: "weapon", stat: 24, characters: ["Angelo", "Jessica"] },
+    { name: "Magma staff", slot: "weapon", stat: 28, characters: ["Angelo", "Jessica"] },
+    { name: "Rune staff", slot: "weapon", stat: 30, characters: ["Angelo", "Jessica"] },
+    { name: "Staff of divine wrath", slot: "weapon", stat: 35, characters: ["Angelo", "Jessica"] },
+    { name: "Staff of antimagic", slot: "weapon", stat: 41, characters: ["Angelo", "Jessica"] },
+    { name: "Staff of resurrection", slot: "weapon", stat: 77, characters: ["Angelo", "Jessica"] },
+    { name: "Magical mace", slot: "weapon", stat: 79, characters: ["Angelo", "Jessica"] },
+
+    // Bows
+    { name: "Short bow", slot: "weapon", stat: 23, characters: ["Angelo"] },
+    { name: "Hunter's bow", slot: "weapon", stat: 30, characters: ["Angelo"] },
+    { name: "Eros' bow", slot: "weapon", stat: 45, characters: ["Angelo"] },
+    { name: "Cheiron's bow", slot: "weapon", stat: 63, characters: ["Angelo"] },
+    { name: "Night sniper", slot: "weapon", stat: 75, characters: ["Angelo"] },
+    { name: "Great bow", slot: "weapon", stat: 95, characters: ["Angelo"] },
+    { name: "Odin's bow", slot: "weapon", stat: 125, characters: ["Angelo"] },
+
+    // Flails
+    { name: "Flail of fury", slot: "weapon", stat: 93, characters: ["Yangus"] },
+    { name: "Flail of destruction", slot: "weapon", stat: 125, characters: ["Yangus"] },
+
+    // ---------- ARMOUR ----------
+    { name: "Dangerous bustier", slot: "armor", stat: 1, characters: ["Jessica", "Red"] },
+    { name: "Jessica's outfit", slot: "armor", stat: 3, characters: ["Jessica"] },
+    { name: "Plain clothes", slot: "armor", stat: 4, characters: ["All"] },
+    { name: "Bandit's grass skirt", slot: "armor", stat: 5, characters: ["Yangus"] },
+    { name: "Wayfarer's clothes", slot: "armor", stat: 7, characters: ["All"] },
+    { name: "Boxer shorts", slot: "armor", stat: 8, characters: ["Yangus"] },
+    { name: "Silk robe", slot: "armor", stat: 10, characters: ["Angelo", "Jessica", "Red"] },
+    { name: "Leather armour", slot: "armor", stat: 11, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Leather kilt", slot: "armor", stat: 12, characters: ["Yangus"] },
+    { name: "Templar's uniform", slot: "armor", stat: 13, characters: ["Angelo"] },
+    { name: "Leather dress", slot: "armor", stat: 15, characters: ["Jessica", "Red"] },
+    { name: "Scale armour", slot: "armor", stat: 17, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Chain mail", slot: "armor", stat: 20, characters: ["Yangus", "Morrie"] },
+    { name: "Leather cape", slot: "armor", stat: 22, characters: ["Angelo", "Morrie"] },
+    { name: "Dancer's costume", slot: "armor", stat: 23, characters: ["Jessica"] },
+    { name: "Bronze armour", slot: "armor", stat: 24, characters: ["Hero"] },
+    { name: "Iron cuirass", slot: "armor", stat: 25, characters: ["Yangus", "Morrie"] },
+    { name: "Fur poncho", slot: "armor", stat: 29, characters: ["Yangus"] },
+    { name: "Cloak of evasion", slot: "armor", stat: 29, characters: ["Angelo", "Jessica", "Red", "Morrie"] },
+    { name: "Iron armour", slot: "armor", stat: 32, characters: ["Hero", "Yangus"] },
+    { name: "Robe of serenity", slot: "armor", stat: 34, characters: ["Jessica", "Red"] },
+    { name: "Turtle shell", slot: "armor", stat: 37, characters: ["Yangus", "Morrie"] },
+    { name: "Bunny suit", slot: "armor", stat: 38, characters: ["Jessica"] },
+    { name: "Full plate armour", slot: "armor", stat: 39, characters: ["Hero"] },
+    { name: "Magic vestment", slot: "armor", stat: 39, characters: ["Angelo", "Jessica", "Morrie", "Red"] },
+    { name: "Zombie mail", slot: "armor", stat: 42, characters: ["Angelo", "Morrie"] },
+    { name: "Silver cuirass", slot: "armor", stat: 44, characters: ["Yangus", "Morrie"] },
+    { name: "Silk bustier", slot: "armor", stat: 44, characters: ["Jessica", "Red"] },
+    { name: "Spangled dress", slot: "armor", stat: 46, characters: ["Jessica", "Red"] },
+    { name: "Posh waistcoat", slot: "armor", stat: 48, characters: ["Angelo"] },
+    { name: "Silver mail", slot: "armor", stat: 50, characters: ["Hero", "Angelo"] },
+    { name: "Magic bikini", slot: "armor", stat: 50, characters: ["Jessica", "Red"] },
+    { name: "Heavy armour", slot: "armor", stat: 52, characters: ["Yangus"] },
+    { name: "Sage's robe", slot: "armor", stat: 55, characters: ["Angelo"] },
+    { name: "Magical skirt", slot: "armor", stat: 55, characters: ["Jessica", "Red"] },
+    { name: "Magic armour", slot: "armor", stat: 55, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Dancer's mail", slot: "armor", stat: 57, characters: ["Angelo", "Red"] },
+    { name: "Flowing dress", slot: "armor", stat: 59, characters: ["Jessica", "Angelo", "Red"] },
+    { name: "Dragon mail", slot: "armor", stat: 60, characters: ["Hero", "Yangus", "Morrie"] },
+    { name: "Velvet cape", slot: "armor", stat: 60, characters: ["Angelo", "Morrie"] },
+    { name: "Shimmering dress", slot: "armor", stat: 67, characters: ["Jessica", "Red"] },
+    { name: "Spiked armour", slot: "armor", stat: 68, characters: ["Hero", "Yangus", "Morrie"] },
+    { name: "Platinum mail", slot: "armor", stat: 72, characters: ["Hero", "Angelo"] },
+    { name: "Angel's robe", slot: "armor", stat: 73, characters: ["Angelo", "Jessica", "Red", "Morrie"] },
+    { name: "Bandit mail", slot: "armor", stat: 80, characters: ["Yangus"] },
+    { name: "Crimson robe", slot: "armor", stat: 82, characters: ["Angelo", "Jessica", "Morrie"] },
+    { name: "Sacred armour", slot: "armor", stat: 84, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Dark robe", slot: "armor", stat: 87, characters: ["Yangus", "Morrie"] },
+    { name: "Mirror armour", slot: "armor", stat: 92, characters: ["Hero", "Angelo"] },
+    { name: "Princess's robe", slot: "armor", stat: 94, characters: ["Jessica", "Red"] },
+    { name: "Gigant armour", slot: "armor", stat: 95, characters: ["Yangus"] },
+    { name: "Liquid metal armour", slot: "armor", stat: 101, characters: ["All"] },
+    { name: "Dragon robe", slot: "armor", stat: 103, characters: ["Angelo", "Jessica", "Morrie", "Red"] },
+    { name: "Divine bustier", slot: "armor", stat: 105, characters: ["Jessica", "Red"] },
+    { name: "Dragovian armour", slot: "armor", stat: 110, characters: ["Hero"] },
+    { name: "Metal king armour", slot: "armor", stat: 120, characters: ["All"] },
+
+    // ---------- SHIELDS ----------
+    { name: "Pot lid", slot: "shield", stat: 2, characters: ["Yangus", "Jessica", "Red", "Morrie"] },
+    { name: "Leather shield", slot: "shield", stat: 4, characters: ["Hero", "Yangus", "Angelo", "Red", "Morrie"] },
+    { name: "Scale shield", slot: "shield", stat: 7, characters: ["All"] },
+    { name: "Silver platter", slot: "shield", stat: 8, characters: ["Jessica", "Red"] },
+    { name: "Bronze shield", slot: "shield", stat: 10, characters: ["Hero", "Yangus"] },
+    { name: "Kitty shield", slot: "shield", stat: 12, characters: ["Angelo", "Jessica", "Red"] },
+    { name: "Templar's shield", slot: "shield", stat: 14, characters: ["Angelo"] },
+    { name: "Iron shield", slot: "shield", stat: 15, characters: ["Hero", "Yangus"] },
+    { name: "Light shield", slot: "shield", stat: 17, characters: ["All"] },
+    { name: "Steel shield", slot: "shield", stat: 22, characters: ["Hero", "Yangus", "Morrie"] },
+    { name: "White shield", slot: "shield", stat: 24, characters: ["Angelo", "Jessica", "Red"] },
+    { name: "Magic shield", slot: "shield", stat: 27, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Dragon shield", slot: "shield", stat: 30, characters: ["Hero", "Yangus", "Morrie"] },
+    { name: "Ice shield", slot: "shield", stat: 33, characters: ["Hero", "Angelo", "Red"] },
+    { name: "Flame shield", slot: "shield", stat: 34, characters: ["Yangus", "Jessica", "Morrie"] },
+    { name: "Bone shield", slot: "shield", stat: 36, characters: ["Yangus"] },
+    { name: "Power shield", slot: "shield", stat: 38, characters: ["Hero", "Yangus", "Angelo"] },
+    { name: "Mirror shield", slot: "shield", stat: 43, characters: ["Hero", "Angelo", "Morrie"] },
+    { name: "Ogre shield", slot: "shield", stat: 45, characters: ["Hero", "Yangus"] },
+    { name: "Saintess shield", slot: "shield", stat: 46, characters: ["Jessica", "Red"] },
+    { name: "Silver shield", slot: "shield", stat: 48, characters: ["Hero", "Yangus", "Angelo", "Morrie"] },
+    { name: "Big boss shield", slot: "shield", stat: 50, characters: ["Yangus"] },
+    { name: "Ruinous shield", slot: "shield", stat: 50, characters: ["Hero", "Yangus", "Angelo", "Morrie"] },
+    { name: "Thanatos' shield", slot: "shield", stat: 55, characters: ["Hero", "Yangus", "Angelo", "Morrie"] },
+    { name: "Goddess shield", slot: "shield", stat: 55, characters: ["Angelo", "Jessica", "Red"] },
+    { name: "Dragovian shield", slot: "shield", stat: 60, characters: ["Hero"] },
+    { name: "Metal king shield", slot: "shield", stat: 65, characters: ["All"] },
+
+    // ---------- HELMETS ----------
+    { name: "Bandana", slot: "helmet", stat: 1, characters: ["Hero"] },
+    { name: "Leather hat", slot: "helmet", stat: 3, characters: ["All"] },
+    { name: "Hairband", slot: "helmet", stat: 5, characters: ["Jessica", "Red"] },
+    { name: "Pointy hat", slot: "helmet", stat: 7, characters: ["Yangus", "Morrie"] },
+    { name: "Turban", slot: "helmet", stat: 8, characters: ["Hero", "Yangus"] },
+    { name: "Feathered cap", slot: "helmet", stat: 9, characters: ["All"] },
+    { name: "Bunny ears", slot: "helmet", stat: 14, characters: ["Jessica"] },
+    { name: "Stone hardhat", slot: "helmet", stat: 15, characters: ["Yangus"] },
+    { name: "Iron helmet", slot: "helmet", stat: 16, characters: ["Hero", "Angelo"] },
+    { name: "Fur hood", slot: "helmet", stat: 18, characters: ["Hero", "Yangus", "Red"] },
+    { name: "Hermes' hat", slot: "helmet", stat: 20, characters: ["All"] },
+    { name: "Coral hairpin", slot: "helmet", stat: 20, characters: ["Jessica", "Red"] },
+    { name: "Slime crown", slot: "helmet", stat: 20, characters: ["Yangus", "Morrie"] },
+    { name: "Bronze helmet", slot: "helmet", stat: 20, characters: ["Hero", "Angelo"] },
+    { name: "Mercury's bandana", slot: "helmet", stat: 23, characters: ["Hero"] },
+    { name: "Silver tiara", slot: "helmet", stat: 24, characters: ["Jessica", "Red"] },
+    { name: "Iron mask", slot: "helmet", stat: 25, characters: ["Hero", "Yangus"] },
+    { name: "Magical hat", slot: "helmet", stat: 25, characters: ["Jessica", "Red"] },
+    { name: "Pirate's hat", slot: "helmet", stat: 30, characters: ["Hero", "Red", "Morrie"] },
+    { name: "Platinum headgear", slot: "helmet", stat: 30, characters: ["Hero", "Angelo"] },
+    { name: "Happy hat", slot: "helmet", stat: 31, characters: ["Angelo", "Jessica"] },
+    { name: "Iron headgear", slot: "helmet", stat: 32, characters: ["Hero", "Yangus", "Morrie"] },
+    { name: "Scholar's cap", slot: "helmet", stat: 33, characters: ["Angelo", "Jessica"] },
+    { name: "Hades' helm", slot: "helmet", stat: 33, characters: ["Hero", "Yangus"] },
+    { name: "Thinking cap", slot: "helmet", stat: 38, characters: ["Angelo", "Jessica"] },
+    { name: "Mythril helm", slot: "helmet", stat: 38, characters: ["Hero", "Angelo"] },
+    { name: "Raging bull helm", slot: "helmet", stat: 42, characters: ["Hero", "Yangus"] },
+    { name: "Golden tiara", slot: "helmet", stat: 43, characters: ["Jessica", "Red"] },
+    { name: "Great helm", slot: "helmet", stat: 45, characters: ["Hero", "Yangus"] },
+    { name: "Phantom mask", slot: "helmet", stat: 48, characters: ["Angelo", "Morrie"] },
+    { name: "Skull helm", slot: "helmet", stat: 49, characters: ["Yangus", "Morrie"] },
+    { name: "Dragovian helmet", slot: "helmet", stat: 50, characters: ["Hero"] },
+    { name: "Sun crown", slot: "helmet", stat: 52, characters: ["Hero", "Jessica", "Red", "Morrie"] },
+    { name: "Metal king helm", slot: "helmet", stat: 55, characters: ["All"] }
+];
+
+const CHARACTERS = ["Hero", "Yangus", "Jessica", "Angelo", "Morrie", "Red"];
+
+// ---------------- STORAGE KEYS ----------------
 
 const STORAGE_KEYS = {
     inventory: "dq8_alchemy_inventory_v1",
     created: "dq8_alchemy_created_v1"
 };
 
-// Map result -> recipe for quick lookup
+// Map result -> recipe
 const recipeByResult = {};
 recipes.forEach(r => {
     recipeByResult[r.result] = r;
@@ -183,12 +492,26 @@ recipes.forEach(r => {
 
 // ---------------- HELPERS ----------------
 
+function isEquipmentCategory(cat) {
+    return ["Weapon", "Armour", "Shield", "Headgear", "Accessory"].includes(cat);
+}
+
+function isItemCategory(cat) {
+    return ["Cheese", "Medicine", "Item"].includes(cat);
+}
+
 function getAllItemsFromRecipes() {
     const set = new Set();
     recipes.forEach(r => {
         set.add(r.result);
         r.ingredients.forEach(i => set.add(i));
     });
+    return Array.from(set);
+}
+
+function getAllInventoryItems() {
+    const set = new Set(getAllItemsFromRecipes());
+    equipmentStats.forEach(e => set.add(e.name));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 
@@ -242,11 +565,17 @@ function getInventorySet() {
     return set;
 }
 
+function equipmentAppliesToCharacter(eq, character) {
+    if (!eq) return false;
+    if (eq.characters.includes("All")) return true;
+    return eq.characters.includes(character);
+}
+
 // ---------------- BUILD UI ----------------
 
 function buildInventory() {
     const container = document.getElementById("inventory-list");
-    const items = getAllItemsFromRecipes();
+    const items = getAllInventoryItems();
 
     items.forEach(item => {
         const label = document.createElement("label");
@@ -259,6 +588,7 @@ function buildInventory() {
         cb.addEventListener("change", () => {
             saveInventory();
             updateCraftable();
+            runOptimizer(false);
         });
 
         label.appendChild(cb);
@@ -273,6 +603,7 @@ function buildRecipesTable() {
     recipes.forEach(r => {
         const tr = document.createElement("tr");
         tr.dataset.result = r.result;
+        tr.dataset.category = r.category;
 
         const tdCat = document.createElement("td");
         tdCat.textContent = r.category;
@@ -300,6 +631,7 @@ function buildRecipesTable() {
             saveCreated();
             renderCreatedStyles();
             updateCreatedList();
+            updateCraftable(); // updates "not created" craftables as well
             updateSummary();
         });
         tdCreated.appendChild(cb);
@@ -309,56 +641,87 @@ function buildRecipesTable() {
     });
 }
 
+// ---------------- FILTERS ----------------
+
+function applyRecipeFilters() {
+    const showEquip = document.getElementById("filter-equipment").checked;
+    const showItems = document.getElementById("filter-items").checked;
+
+    document.querySelectorAll("#recipes-body tr").forEach(tr => {
+        const cat = tr.dataset.category;
+        const isEquip = isEquipmentCategory(cat);
+        const isItem = isItemCategory(cat);
+
+        let show = true;
+        if (isEquip && !showEquip) show = false;
+        if (isItem && !showItems) show = false;
+
+        tr.style.display = show ? "" : "none";
+    });
+}
+
 // ---------------- UPDATE / RENDER ----------------
 
 function updateCraftable() {
     const inv = getInventorySet();
+    const craftableBody = document.getElementById("craftable-body");
+    const craftableNCBody = document.getElementById("craftable-not-created-body");
+    craftableBody.innerHTML = "";
+    craftableNCBody.innerHTML = "";
+
     let craftableCount = 0;
+    let craftableNotCreatedCount = 0;
 
-    const rows = document.querySelectorAll("#recipes-body tr");
-    rows.forEach(tr => {
-        const result = tr.dataset.result;
-        const recipe = recipeByResult[result];
-        const cell = tr.querySelector(".craftable-cell");
+    recipes.forEach(r => {
+        const canCraft = r.ingredients.every(ing => inv.has(ing));
+        const createdCb = document.querySelector(`.recipe-created[data-result="${CSS.escape(r.result)}"]`);
+        const isCreated = createdCb ? createdCb.checked : false;
 
-        const canCraft = recipe.ingredients.every(ing => inv.has(ing));
+        // Update main table's craftable column + row highlight
+        const mainRow = document.querySelector(`#recipes-body tr[data-result="${CSS.escape(r.result)}"]`);
+        if (mainRow) {
+            const cell = mainRow.querySelector(".craftable-cell");
+            if (canCraft) {
+                craftableCount++;
+                mainRow.classList.add("craftable-row");
+                cell.textContent = "Yes";
+                cell.classList.remove("craftable-no");
+                cell.classList.add("craftable-yes");
+            } else {
+                mainRow.classList.remove("craftable-row");
+                cell.textContent = "No";
+                cell.classList.add("craftable-no");
+                cell.classList.remove("craftable-yes");
+            }
+        }
 
         if (canCraft) {
-            craftableCount++;
-            tr.classList.add("craftable-row");
-            cell.textContent = "Yes";
-            cell.classList.remove("craftable-no");
-            cell.classList.add("craftable-yes");
-        } else {
-            tr.classList.remove("craftable-row");
-            cell.textContent = "No";
-            cell.classList.add("craftable-no");
-            cell.classList.remove("craftable-yes");
+            const tr = document.createElement("tr");
+            const tdCat = document.createElement("td");
+            const tdRes = document.createElement("td");
+            const tdIng = document.createElement("td");
+            tdCat.textContent = r.category;
+            tdRes.textContent = r.result;
+            tdIng.textContent = r.ingredients.join(" + ");
+            tr.appendChild(tdCat);
+            tr.appendChild(tdRes);
+            tr.appendChild(tdIng);
+            craftableBody.appendChild(tr);
+
+            if (!isCreated) {
+                craftableNotCreatedCount++;
+                const tr2 = tr.cloneNode(true);
+                craftableNCBody.appendChild(tr2);
+            }
         }
     });
 
     const craftableSummary = document.getElementById("craftable-summary");
     craftableSummary.textContent = `${craftableCount} / ${recipes.length} recipes craftable.`;
 
-    // Also fill craftable table
-    const craftableBody = document.getElementById("craftable-body");
-    craftableBody.innerHTML = "";
-    recipes.forEach(r => {
-        const canCraft = r.ingredients.every(ing => inv.has(ing));
-        if (!canCraft) return;
-
-        const tr = document.createElement("tr");
-        const tdCat = document.createElement("td");
-        const tdRes = document.createElement("td");
-        const tdIng = document.createElement("td");
-        tdCat.textContent = r.category;
-        tdRes.textContent = r.result;
-        tdIng.textContent = r.ingredients.join(" + ");
-        tr.appendChild(tdCat);
-        tr.appendChild(tdRes);
-        tr.appendChild(tdIng);
-        craftableBody.appendChild(tr);
-    });
+    const craftableNCSummary = document.getElementById("craftable-not-created-summary");
+    craftableNCSummary.textContent =
+        `${craftableNotCreatedCount} craftable recipes that are not yet created.`;
 
     updateSummary();
 }
@@ -384,9 +747,7 @@ function updateCreatedList() {
         if (cb.checked) {
             const result = cb.dataset.result;
             const recipe = recipeByResult[result];
-            if (recipe) {
-                created.push(recipe);
-            }
+            if (recipe) created.push(recipe);
         }
     });
 
@@ -407,6 +768,7 @@ function updateCreatedList() {
 function updateSummary() {
     const overall = document.getElementById("overall-summary");
     const total = recipes.length;
+
     let createdCount = 0;
     document.querySelectorAll(".recipe-created").forEach(cb => {
         if (cb.checked) createdCount++;
@@ -417,7 +779,8 @@ function updateSummary() {
         if (cell.textContent === "Yes") craftableCount++;
     });
 
-    overall.textContent = `${createdCount} / ${total} recipes created – ${craftableCount} / ${total} recipes currently craftable`;
+    overall.textContent =
+        `${createdCount} / ${total} recipes created – ${craftableCount} / ${total} recipes currently craftable`;
 }
 
 // ---------------- EXPORT / IMPORT ----------------
@@ -470,6 +833,7 @@ function importProgress(file) {
             renderCreatedStyles();
             updateCreatedList();
             updateSummary();
+            runOptimizer(false);
             alert("Progress imported successfully.");
         } catch (err) {
             console.error(err);
@@ -477,6 +841,74 @@ function importProgress(file) {
         }
     };
     reader.readAsText(file);
+}
+
+// ---------------- EQUIPMENT OPTIMIZER ----------------
+
+function runOptimizer(showAlertIfEmpty = true) {
+    const output = document.getElementById("optimizer-output");
+    if (!output) return;
+
+    const inv = getInventorySet();
+    const ownedEquip = equipmentStats.filter(e => inv.has(e.name));
+
+    if (ownedEquip.length === 0) {
+        if (showAlertIfEmpty) {
+            output.innerHTML = "<p class=\"small-text\">No equipment selected in inventory.</p>";
+        }
+        return;
+    }
+
+    const slots = ["weapon", "armor", "shield", "helmet"];
+    const result = {};
+
+    CHARACTERS.forEach(ch => {
+        result[ch] = {};
+        slots.forEach(slot => {
+            const candidates = ownedEquip.filter(
+                e => e.slot === slot && equipmentAppliesToCharacter(e, ch)
+            );
+            if (candidates.length === 0) {
+                result[ch][slot] = null;
+            } else {
+                const best = candidates.reduce(
+                    (bestSoFar, cur) => (!bestSoFar || cur.stat > bestSoFar.stat ? cur : bestSoFar),
+                    null
+                );
+                result[ch][slot] = best;
+            }
+        });
+    });
+
+    // Render result table
+    let html = "";
+    html += "<table class=\"table table-striped table-hover\">";
+    html += "<thead><tr>";
+    html += "<th>Character</th>";
+    html += "<th>Weapon (ATK)</th>";
+    html += "<th>Armour (DEF)</th>";
+    html += "<th>Shield (DEF)</th>";
+    html += "<th>Helmet (DEF)</th>";
+    html += "</tr></thead><tbody>";
+
+    CHARACTERS.forEach(ch => {
+        const weapon = result[ch].weapon;
+        const armor = result[ch].armor;
+        const shield = result[ch].shield;
+        const helmet = result[ch].helmet;
+
+        html += "<tr>";
+        html += `<td>${ch}</td>`;
+        html += `<td>${weapon ? weapon.name + " (" + weapon.stat + ")" : "-"}</td>`;
+        html += `<td>${armor ? armor.name + " (" + armor.stat + ")" : "-"}</td>`;
+        html += `<td>${shield ? shield.name + " (" + shield.stat + ")" : "-"}</td>`;
+        html += `<td>${helmet ? helmet.name + " (" + helmet.stat + ")" : "-"}</td>`;
+        html += "</tr>";
+    });
+
+    html += "</tbody></table>";
+
+    output.innerHTML = html;
 }
 
 // ---------------- INIT ----------------
@@ -490,10 +922,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCreatedState();
 
     // Initial renders
-    updateCraftable();
     renderCreatedStyles();
     updateCreatedList();
-    updateSummary();
+    updateCraftable();
+    applyRecipeFilters();
+    runOptimizer(false);
 
     // Export / import events
     const exportBtn = document.getElementById("export-state-btn");
@@ -505,8 +938,19 @@ document.addEventListener("DOMContentLoaded", () => {
         importInput.addEventListener("change", e => {
             const file = e.target.files[0];
             importProgress(file);
-            // Reset input so you can re-import the same file if needed
             e.target.value = "";
         });
+    }
+
+    // Filter events
+    const filterEquip = document.getElementById("filter-equipment");
+    const filterItems = document.getElementById("filter-items");
+    if (filterEquip) filterEquip.addEventListener("change", applyRecipeFilters);
+    if (filterItems) filterItems.addEventListener("change", applyRecipeFilters);
+
+    // Optimizer button
+    const optBtn = document.getElementById("optimizer-run-btn");
+    if (optBtn) {
+        optBtn.addEventListener("click", () => runOptimizer(true));
     }
 });
