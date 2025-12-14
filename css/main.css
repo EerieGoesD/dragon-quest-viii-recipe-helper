@@ -233,7 +233,25 @@ h3 {
     background-color: #fffbe5;
 }
 
+/* FIX: ensure craftable highlight shows even with table-striped */
+.table tbody tr.craftable-row td {
+    background-color: #fffbe5 !important;
+}
+
+.table-hover tbody tr.craftable-row:hover td {
+    background-color: #fffbe5 !important;
+}
+
 .created-row {
+    background-color: #c7f7c1 !important;
+}
+
+/* Keep created highlight visible even with striped/hover */
+.table tbody tr.created-row td {
+    background-color: #c7f7c1 !important;
+}
+
+.table-hover tbody tr.created-row:hover td {
     background-color: #c7f7c1 !important;
 }
 
