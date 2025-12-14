@@ -180,8 +180,8 @@ h3 {
 }
 
 .inventory-list {
-    max-height: 520px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
     border: 1px solid #eee;
     padding: 8px;
     background-color: #fafafa;
