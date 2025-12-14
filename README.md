@@ -28,4 +28,4 @@ Created by [EERIE](https://linktr.ee/eeriegoesd).
 
 ## Other Work
 - YouTube: https://www.youtube.com/eeriegoesd
-- TikTok: https://www.tiktok.com/@eeriegoesd)
+- TikTok: https://www.tiktok.com/@eeriegoesd
