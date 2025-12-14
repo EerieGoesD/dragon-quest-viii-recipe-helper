@@ -279,10 +279,14 @@ h3 {
 .recipe-filters {
     margin: 8px 0 12px 0;
     font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
 }
 
-.recipe-filters label {
-    margin-right: 15px;
+.recipe-filters select {
+    margin-left: 6px;
 }
 
 /* Optimizer */
