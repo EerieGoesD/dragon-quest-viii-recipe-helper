@@ -200,17 +200,33 @@
 
             <!-- Equipment Optimizer -->
             <section class="optimizer-panel" id="optimizer-panel">
-                <h2>Equipment Optimizer</h2>
-                <p class="small-text">
-                    Tick all <strong>equipment</strong> you own in the Inventory on the left
-                    (weapons, armour, shields, helmets), then click the button below.
-                    The calculator simply picks the highest Attack weapon and the highest Defence
-                    armour/shield/helmet each character can equip from your inventory.
-                </p>
+              <h2>Equipment Optimizer</h2>
+              <p class="small-text">
+                Tick all <strong>equipment</strong> you own in the Inventory on the left
+                (weapons, armour, shields, helmets, accessories), then click the button below.
+                Weapons prioritize ATK, armour/shield/helmet prioritize DEF, and accessories use the dropdown below.
+              </p>
+            
+              <label class="small-text" style="display:inline-block; margin: 6px 0 10px 0;">
+                What to prioritize in accessory:
+                <select id="optimizer-accessory-priority">
+                  <option>Agility</option>
+                  <option>Attack</option>
+                  <option>Defence</option>
+                  <option>Max HP</option>
+                  <option>Max MP</option>
+                  <option selected>Total Stats</option>
+                  <option>Wisdom</option>
+                </select>
+              </label>
+            
+              <div>
                 <button id="optimizer-run-btn" class="btn btn-export">Calculate optimal equipment</button>
-                <div id="optimizer-output" class="optimizer-output">
-                    <!-- Filled by JS -->
-                </div>
+              </div>
+            
+              <div id="optimizer-output" class="optimizer-output">
+                <!-- Filled by JS -->
+              </div>
             </section>
 
         </section>
