@@ -472,7 +472,53 @@ const equipmentStats = [
   { name: "Skull helm", slot: "helmet", stat: 49, characters: ["Yangus", "Morrie"] },
   { name: "Dragovian helmet", slot: "helmet", stat: 50, characters: ["Hero"] },
   { name: "Sun crown", slot: "helmet", stat: 52, characters: ["Hero", "Jessica", "Red", "Morrie"] },
-  { name: "Metal king helm", slot: "helmet", stat: 55, characters: ["All"] }
+  { name: "Metal king helm", slot: "helmet", stat: 55, characters: ["All"] },
+
+  // ---------- ACCESSORIES ----------
+  { name: "Agility ring", slot: "accessory", stats: { agility: 15 }, characters: ["All"] },
+  { name: "Argon ring", slot: "accessory", stats: { attack: 20, agility: 20 }, characters: ["All"] },
+  { name: "Bunny tail", slot: "accessory", stats: { agility: 2 }, characters: ["All"] },
+  { name: "Catholicon ring", slot: "accessory", stats: { defence: 15 }, characters: ["All"] },
+  { name: "Devil's tail", slot: "accessory", stats: { agility: 10 }, characters: ["Yangus", "Jessica", "Angelo", "Red", "Morrie"] },
+  { name: "Dragon's scale", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Elevating shoes", slot: "accessory", stats: { agility: 5 }, characters: ["All"] },
+  { name: "Fire dragon charm", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Fishnet stockings", slot: "accessory", stats: { defence: 8 }, characters: ["Jessica", "Red"] },
+  { name: "Full moon ring", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Garter", slot: "accessory", stats: { defence: 6 }, characters: ["Jessica", "Red"] },
+  { name: "Goddess ring", slot: "accessory", stats: { wisdom: 20 }, characters: ["All"] },
+  { name: "Gold bracer", slot: "accessory", stats: { defence: 4 }, characters: ["All"] },
+  { name: "Gold ring", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Gold rosary", slot: "accessory", stats: { wisdom: 5 }, characters: ["All"] },
+  { name: "Golden slippers", slot: "accessory", stats: { defence: 1 }, characters: ["All"] },
+  { name: "Gospel ring", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Hearty ring", slot: "accessory", stats: { defence: 1, hp: 10, mp: 10 }, characters: ["All"] },
+  { name: "Holy talisman", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Lady's ring", slot: "accessory", stats: { defence: 2 }, characters: ["All"] },
+  { name: "Light dragon charm", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Life bracer", slot: "accessory", stats: { defence: 5, hp: 30 }, characters: ["All"] },
+  { name: "Lord's bracer", slot: "accessory", stats: { attack: 5 }, characters: ["All"] },
+  { name: "Lucky pendant", slot: "accessory", stats: { defence: 8 }, characters: ["All"] },
+  { name: "Metal slime earrings", slot: "accessory", stats: { agility: 5 }, characters: ["All"] },
+  { name: "Meteorite bracer", slot: "accessory", stats: { agility: 50 }, characters: ["All"] },
+  { name: "Mighty armlet", slot: "accessory", stats: { attack: 15 }, characters: ["All"] },
+  { name: "Prayer ring", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Recovery ring", slot: "accessory", stats: { defence: 15 }, characters: ["All"] },
+  { name: "Ring of awakening", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Ring of clarity", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Ring of immunity", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Ring of truth", slot: "accessory", stats: { defence: 10 }, characters: ["All"] },
+  { name: "Ruby of protection", slot: "accessory", stats: { defence: 15 }, characters: ["All"] },
+  { name: "Scholar's specs", slot: "accessory", stats: { wisdom: 15 }, characters: ["All"] },
+  { name: "Skull ring", slot: "accessory", stats: { agility: 15 }, characters: ["Yangus", "Jessica", "Angelo", "Red", "Morrie"] },
+  { name: "Slime earrings", slot: "accessory", stats: { defence: 4 }, characters: ["All"] },
+  { name: "Sorcerer's ring", slot: "accessory", stats: { wisdom: 10, mp: 30 }, characters: ["All"] },
+  { name: "Strength ring", slot: "accessory", stats: { attack: 5 }, characters: ["All"] },
+  { name: "Templar's ring", slot: "accessory", stats: { defence: 5 }, characters: ["All"] },
+  { name: "Templar Captain's ring", slot: "accessory", stats: { attack: 10, wisdom: 10 }, characters: ["All"] },
+  { name: "Titan belt", slot: "accessory", stats: { attack: 10 }, characters: ["All"] },
+  { name: "Tough guy tattoo", slot: "accessory", stats: { attack: 8 }, characters: ["All"] },
+
 ];
 
 const CHARACTERS = ["Hero", "Yangus", "Jessica", "Angelo", "Morrie", "Red"];
@@ -482,7 +528,8 @@ const CHARACTERS = ["Hero", "Yangus", "Jessica", "Angelo", "Morrie", "Red"];
 const STORAGE_KEYS = {
   inventory: "dq8_alchemy_inventory_v1",
   created: "dq8_alchemy_created_v1",
-  maxMix: "dq8_alchemy_max_mix_v1"
+  maxMix: "dq8_alchemy_max_mix_v1",
+  accessoryPriority: "dq8_optimizer_accessory_priority_v1"
 };
 
 // Map result -> recipe
@@ -570,6 +617,54 @@ function equipmentAppliesToCharacter(eq, character) {
   if (!eq) return false;
   if (eq.characters.includes("All")) return true;
   return eq.characters.includes(character);
+}
+
+const ACCESSORY_PRIORITY_OPTIONS = ["Agility", "Attack", "Defence", "Max HP", "Max MP", "Total Stats", "Wisdom"];
+const ACCESSORY_PRIORITY_TO_KEY = {
+  "Agility": "agility",
+  "Attack": "attack",
+  "Defence": "defence",
+  "Wisdom": "wisdom",
+  "Max HP": "hp",
+  "Max MP": "mp",
+  "Total Stats": "total"
+};
+
+function getAccessoryPriority() {
+  const raw = localStorage.getItem(STORAGE_KEYS.accessoryPriority);
+  return ACCESSORY_PRIORITY_TO_KEY[raw] ? raw : "Total Stats";
+}
+
+function setAccessoryPriority(label) {
+  const v = ACCESSORY_PRIORITY_TO_KEY[label] ? label : "Total Stats";
+  localStorage.setItem(STORAGE_KEYS.accessoryPriority, v);
+}
+
+function bindAccessoryPrioritySelect() {
+  const sel = document.getElementById("optimizer-accessory-priority");
+  if (!sel) return;
+
+  sel.value = getAccessoryPriority();
+
+  if (!sel.dataset.bound) {
+    sel.dataset.bound = "1";
+    sel.addEventListener("change", () => {
+      setAccessoryPriority(sel.value);
+      runOptimizer(false);
+    });
+  }
+}
+
+function accessoryTotal(stats) {
+  if (!stats) return 0;
+  return (stats.attack || 0) + (stats.agility || 0) + (stats.defence || 0) + (stats.wisdom || 0) + (stats.hp || 0) + (stats.mp || 0);
+}
+
+function getAccessoryScore(eq, priorityLabel) {
+  const key = ACCESSORY_PRIORITY_TO_KEY[priorityLabel] || "total";
+  const s = eq.stats || {};
+  if (key === "total") return accessoryTotal(s);
+  return s[key] || 0;
 }
 
 // ---------------- MAX MIX FILTER (2 or 3) ----------------
@@ -914,8 +1009,15 @@ function runOptimizer(showAlertIfEmpty = true) {
     return;
   }
 
-  const slots = ["weapon", "armor", "shield", "helmet"];
+  const accessoryPriority = getAccessoryPriority();
+  const slots = ["weapon", "armor", "shield", "helmet", "accessory"];
   const result = {};
+
+  function scoreFor(slot, item) {
+    if (!item) return -Infinity;
+    if (slot === "accessory") return getAccessoryScore(item, accessoryPriority);
+    return typeof item.stat === "number" ? item.stat : 0;
+  }
 
   CHARACTERS.forEach(ch => {
     result[ch] = {};
@@ -924,10 +1026,22 @@ function runOptimizer(showAlertIfEmpty = true) {
       if (candidates.length === 0) {
         result[ch][slot] = null;
       } else {
-        const best = candidates.reduce(
-          (bestSoFar, cur) => (!bestSoFar || cur.stat > bestSoFar.stat ? cur : bestSoFar),
-          null
-        );
+        const best = candidates.reduce((bestSoFar, cur) => {
+          if (!bestSoFar) return cur;
+          const a = scoreFor(slot, bestSoFar);
+          const b = scoreFor(slot, cur);
+          if (b > a) return cur;
+          if (b < a) return bestSoFar;
+
+          // tie-break: prefer higher total stats for accessories, otherwise keep existing
+          if (slot === "accessory") {
+            const ta = accessoryTotal(bestSoFar.stats || {});
+            const tb = accessoryTotal(cur.stats || {});
+            if (tb > ta) return cur;
+            if (tb < ta) return bestSoFar;
+          }
+          return bestSoFar;
+        }, null);
         result[ch][slot] = best;
       }
     });
@@ -941,6 +1055,7 @@ function runOptimizer(showAlertIfEmpty = true) {
   html += "<th>Armour (DEF)</th>";
   html += "<th>Shield (DEF)</th>";
   html += "<th>Helmet (DEF)</th>";
+  html += `<th>Accessory (${accessoryPriority})</th>`;
   html += "</tr></thead><tbody>";
 
   CHARACTERS.forEach(ch => {
@@ -948,13 +1063,15 @@ function runOptimizer(showAlertIfEmpty = true) {
     const armor = result[ch].armor;
     const shield = result[ch].shield;
     const helmet = result[ch].helmet;
+    const accessory = result[ch].accessory;
 
     html += "<tr>";
     html += `<td>${ch}</td>`;
-    html += `<td>${weapon ? weapon.name + " (" + weapon.stat + ")" : "-"}</td>`;
-    html += `<td>${armor ? armor.name + " (" + armor.stat + ")" : "-"}</td>`;
-    html += `<td>${shield ? shield.name + " (" + shield.stat + ")" : "-"}</td>`;
-    html += `<td>${helmet ? helmet.name + " (" + helmet.stat + ")" : "-"}</td>`;
+    html += `<td>${weapon ? weapon.name + " (" + scoreFor("weapon", weapon) + ")" : "-"}</td>`;
+    html += `<td>${armor ? armor.name + " (" + scoreFor("armor", armor) + ")" : "-"}</td>`;
+    html += `<td>${shield ? shield.name + " (" + scoreFor("shield", shield) + ")" : "-"}</td>`;
+    html += `<td>${helmet ? helmet.name + " (" + scoreFor("helmet", helmet) + ")" : "-"}</td>`;
+    html += `<td>${accessory ? accessory.name + " (" + scoreFor("accessory", accessory) + ")" : "-"}</td>`;
     html += "</tr>";
   });
 
@@ -970,6 +1087,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // bind dropdown + filters (uses the HTML dropdown only)
   bindMaxMixSelect();
+  bindAccessoryPrioritySelect();
 
   // Load saved state
   loadInventoryState();
