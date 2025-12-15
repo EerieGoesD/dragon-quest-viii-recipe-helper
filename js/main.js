@@ -18,7 +18,7 @@ const recipes = [
   { category: "Weapon", result: "Dragonlord claw", ingredients: ["Dragon claws", "Ethereal stone"] },
   { category: "Weapon", result: "Dragontail whip", ingredients: ["Snakeskin whip", "Dragon's scale", "Dragon's scale"] },
   { category: "Weapon", result: "Dragovian king sword", ingredients: ["Dragovian sword", "Liquid metal sword"] },
-  { category: "Weapon", result: "Erdrick's Sword", ingredients: ["Ye Olde Sword of Erdrick", "Liquid metal sword", "Orichalcum"] },
+  { category: "Weapon", result: "Erdrick's sword", ingredients: ["Ye Olde Sword of Erdrick", "Liquid metal sword", "Orichalcum"] },
   { category: "Weapon", result: "Eros' bow", ingredients: ["Hunter's bow", "Garter"] },
   { category: "Weapon", result: "Falcon knife", ingredients: ["Slime earrings", "Tough guy tattoo", "Agility ring"] },
   { category: "Weapon", result: "Fallen angel rapier", ingredients: ["Holy silver rapier", "Devil's tail", "Wing of bat"] },
@@ -39,7 +39,7 @@ const recipes = [
   { category: "Weapon", result: "Long spear", ingredients: ["Cypress stick", "Cypress stick", "Iron lance"] },
   { category: "Weapon", result: "Lunar fan", ingredients: ["Stellar fan", "Full moon ring", "Gold rosary"] },
   { category: "Weapon", result: "Magma staff", ingredients: ["Wizard's staff", "Rockbomb shard", "Rockbomb shard"] },
-  { category: "Weapon", result: "Megaton hammer", ingredients: ["Über war hammer", "Conquerer's axe", "Orichalcum"] },
+  { category: "Weapon", result: "Megaton hammer", ingredients: ["Über war hammer", "Conqueror's axe", "Orichalcum"] },
   { category: "Weapon", result: "Mercury's rapier", ingredients: ["Fallen angel rapier", "Mercury's bandana", "Mercury's bandana"] },
   { category: "Weapon", result: "Metal king spear", ingredients: ["Metal wing boomerang", "Holy lance"] },
   { category: "Weapon", result: "Metal wing boomerang", ingredients: ["Razor wing boomerang", "Metal king spear"] },
@@ -482,7 +482,7 @@ const CHARACTERS = ["Hero", "Yangus", "Jessica", "Angelo", "Morrie", "Red"];
 const STORAGE_KEYS = {
   inventory: "dq8_alchemy_inventory_v1",
   created: "dq8_alchemy_created_v1",
-  maxMix: "dq8_alchemy_max_mix_v1" // NEW
+  maxMix: "dq8_alchemy_max_mix_v1"
 };
 
 // Map result -> recipe
@@ -585,41 +585,19 @@ function setMaxMixItems(n) {
   localStorage.setItem(STORAGE_KEYS.maxMix, String(v));
 }
 
-function ensureMaxMixDropdown() {
-  const filters = document.querySelector(".recipe-filters");
-  if (!filters) return;
+function bindMaxMixSelect() {
+  const maxMixSelect = document.getElementById("max-mix-select");
+  if (!maxMixSelect) return;
 
-  let select = document.getElementById("max-mix-items");
+  // set initial UI from saved value
+  maxMixSelect.value = String(getMaxMixItems());
 
-  if (!select) {
-    const label = document.createElement("label");
-    label.className = "max-mix-label";
-    label.appendChild(document.createTextNode("Maximum Items that can be mixed: "));
-
-    select = document.createElement("select");
-    select.id = "max-mix-items";
-
-    const opt2 = document.createElement("option");
-    opt2.value = "2";
-    opt2.textContent = "2";
-    const opt3 = document.createElement("option");
-    opt3.value = "3";
-    opt3.textContent = "3";
-
-    select.appendChild(opt2);
-    select.appendChild(opt3);
-
-    label.appendChild(select);
-    filters.appendChild(label);
-  }
-
-  select.value = String(getMaxMixItems());
-
-  if (!select.dataset.bound) {
-    select.dataset.bound = "1";
-    select.addEventListener("change", () => {
-      setMaxMixItems(parseInt(select.value, 10));
-      updateCraftable(); // refresh the two craftable tables + their summaries
+  // bind once
+  if (!maxMixSelect.dataset.bound) {
+    maxMixSelect.dataset.bound = "1";
+    maxMixSelect.addEventListener("change", () => {
+      setMaxMixItems(parseInt(maxMixSelect.value, 10));
+      updateCraftable();
     });
   }
 }
@@ -684,7 +662,7 @@ function buildRecipesTable() {
       saveCreated();
       renderCreatedStyles();
       updateCreatedList();
-      updateCraftable(); // updates "not created" craftables as well
+      updateCraftable();
       updateSummary();
     });
     tdCreated.appendChild(cb);
@@ -697,8 +675,8 @@ function buildRecipesTable() {
 // ---------------- FILTERS ----------------
 
 function applyRecipeFilters() {
-  const showEquip = document.getElementById("filter-equipment").checked;
-  const showItems = document.getElementById("filter-items").checked;
+  const showEquip = document.getElementById("filter-equipment")?.checked ?? true;
+  const showItems = document.getElementById("filter-items")?.checked ?? true;
 
   document.querySelectorAll("#recipes-body tr").forEach(tr => {
     const cat = tr.dataset.category;
@@ -733,7 +711,7 @@ function updateCraftable() {
     const createdCb = document.querySelector(`.recipe-created[data-result="${CSS.escape(r.result)}"]`);
     const isCreated = createdCb ? createdCb.checked : false;
 
-    // Update main table's craftable column + row highlight (always based on real recipe ingredients)
+    // Update main table craftable column + highlight (always based on actual ingredients)
     const mainRow = document.querySelector(`#recipes-body tr[data-result="${CSS.escape(r.result)}"]`);
     if (mainRow) {
       const cell = mainRow.querySelector(".craftable-cell");
@@ -750,7 +728,7 @@ function updateCraftable() {
       }
     }
 
-    // Only show in the TWO craftable tables if recipe uses <= maxMix ingredients
+    // Only show in craftable tables if recipe uses <= maxMix ingredients
     if (canCraft && r.ingredients.length <= maxMix) {
       craftableShownCount++;
 
@@ -768,18 +746,21 @@ function updateCraftable() {
 
       if (!isCreated) {
         craftableNotCreatedShownCount++;
-        const tr2 = tr.cloneNode(true);
-        craftableNCBody.appendChild(tr2);
+        craftableNCBody.appendChild(tr.cloneNode(true));
       }
     }
   });
 
   const craftableSummary = document.getElementById("craftable-summary");
-  craftableSummary.textContent = `${craftableShownCount} / ${eligibleTotal} recipes craftable (max ${maxMix} items).`;
+  if (craftableSummary) {
+    craftableSummary.textContent = `${craftableShownCount} / ${eligibleTotal} recipes craftable (max ${maxMix} items).`;
+  }
 
   const craftableNCSummary = document.getElementById("craftable-not-created-summary");
-  craftableNCSummary.textContent =
-    `${craftableNotCreatedShownCount} craftable recipes (max ${maxMix} items) that are not yet created.`;
+  if (craftableNCSummary) {
+    craftableNCSummary.textContent =
+      `${craftableNotCreatedShownCount} craftable recipes (max ${maxMix} items) that are not yet created.`;
+  }
 
   updateSummary();
 }
@@ -787,11 +768,8 @@ function updateCraftable() {
 function renderCreatedStyles() {
   document.querySelectorAll("#recipes-body tr").forEach(tr => {
     const cb = tr.querySelector(".recipe-created");
-    if (cb && cb.checked) {
-      tr.classList.add("created-row");
-    } else {
-      tr.classList.remove("created-row");
-    }
+    if (cb && cb.checked) tr.classList.add("created-row");
+    else tr.classList.remove("created-row");
   });
 }
 
@@ -836,8 +814,10 @@ function updateSummary() {
     if (cell.textContent === "Yes") craftableCount++;
   });
 
-  overall.textContent =
-    `${createdCount} / ${total} recipes created – ${craftableCount} / ${total} recipes currently craftable`;
+  if (overall) {
+    overall.textContent =
+      `${createdCount} / ${total} recipes created – ${craftableCount} / ${total} recipes currently craftable`;
+  }
 }
 
 // ---------------- EXPORT / IMPORT ----------------
@@ -847,12 +827,18 @@ function exportProgress() {
   document.querySelectorAll(".inventory-checkbox").forEach(cb => {
     inventoryState[cb.dataset.item] = cb.checked;
   });
+
   const createdState = {};
   document.querySelectorAll(".recipe-created").forEach(cb => {
     createdState[cb.dataset.result] = cb.checked;
   });
 
-  const combined = { inventory: inventoryState, created: createdState };
+  const combined = {
+    inventory: inventoryState,
+    created: createdState,
+    maxMix: getMaxMixItems() // include (safe)
+  };
+
   const json = JSON.stringify(combined, null, 2);
 
   const blob = new Blob([json], { type: "application/json" });
@@ -870,19 +856,29 @@ function exportProgress() {
 
 function importProgress(file) {
   if (!file) return;
+
   const reader = new FileReader();
   reader.onload = e => {
     try {
       const data = JSON.parse(e.target.result);
+
       const inventory = data.inventory || {};
       const created = data.created || {};
+      const maxMix = data.maxMix; // may be missing in older files
 
       document.querySelectorAll(".inventory-checkbox").forEach(cb => {
         cb.checked = !!inventory[cb.dataset.item];
       });
+
       document.querySelectorAll(".recipe-created").forEach(cb => {
         cb.checked = !!created[cb.dataset.result];
       });
+
+      if (maxMix === 2 || maxMix === 3) {
+        setMaxMixItems(maxMix);
+        const sel = document.getElementById("max-mix-select");
+        if (sel) sel.value = String(maxMix);
+      }
 
       saveInventory();
       saveCreated();
@@ -891,12 +887,14 @@ function importProgress(file) {
       updateCreatedList();
       updateSummary();
       runOptimizer(false);
+
       alert("Progress imported successfully.");
     } catch (err) {
       console.error(err);
       alert("Failed to import progress. Check the file format.");
     }
   };
+
   reader.readAsText(file);
 }
 
@@ -935,7 +933,6 @@ function runOptimizer(showAlertIfEmpty = true) {
     });
   });
 
-  // Render result table
   let html = "";
   html += '<table class="table table-striped table-hover">';
   html += "<thead><tr>";
@@ -962,7 +959,6 @@ function runOptimizer(showAlertIfEmpty = true) {
   });
 
   html += "</tbody></table>";
-
   output.innerHTML = html;
 }
 
@@ -972,8 +968,8 @@ document.addEventListener("DOMContentLoaded", () => {
   buildInventory();
   buildRecipesTable();
 
-  // NEW: inject + bind the dropdown next to the Equipment/Items checkboxes
-  ensureMaxMixDropdown();
+  // bind dropdown + filters (uses the HTML dropdown only)
+  bindMaxMixSelect();
 
   // Load saved state
   loadInventoryState();
@@ -1005,18 +1001,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial renders
-  renderCreatedStyles();
-  updateCreatedList();
-  updateCraftable();
-  applyRecipeFilters();
-  runOptimizer(false);
-
   // Export / import events
   const exportBtn = document.getElementById("export-state-btn");
-  if (exportBtn) {
-    exportBtn.addEventListener("click", exportProgress);
-  }
+  if (exportBtn) exportBtn.addEventListener("click", exportProgress);
+
   const importInput = document.getElementById("import-state-input");
   if (importInput) {
     importInput.addEventListener("change", e => {
@@ -1034,7 +1022,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Optimizer button
   const optBtn = document.getElementById("optimizer-run-btn");
-  if (optBtn) {
-    optBtn.addEventListener("click", () => runOptimizer(true));
-  }
+  if (optBtn) optBtn.addEventListener("click", () => runOptimizer(true));
+
+  // Initial renders
+  renderCreatedStyles();
+  updateCreatedList();
+  updateCraftable();
+  applyRecipeFilters();
+  runOptimizer(false);
 });
