@@ -518,7 +518,6 @@ const equipmentStats = [
   { name: "Templar Captain's ring", slot: "accessory", stats: { attack: 10, wisdom: 10 }, characters: ["All"] },
   { name: "Titan belt", slot: "accessory", stats: { attack: 10 }, characters: ["All"] },
   { name: "Tough guy tattoo", slot: "accessory", stats: { attack: 8 }, characters: ["All"] },
-
 ];
 
 const CHARACTERS = ["Hero", "Yangus", "Jessica", "Angelo", "Morrie", "Red"];
@@ -529,7 +528,9 @@ const STORAGE_KEYS = {
   inventory: "dq8_alchemy_inventory_v1",
   created: "dq8_alchemy_created_v1",
   maxMix: "dq8_alchemy_max_mix_v1",
-  accessoryPriority: "dq8_optimizer_accessory_priority_v1"
+  accessoryPriority: "dq8_optimizer_accessory_priority_v1",
+  // NEW
+  jessicaSwords: "dq8_optimizer_jessica_can_equip_swords_v1"
 };
 
 // Map result -> recipe
@@ -665,6 +666,74 @@ function getAccessoryScore(eq, priorityLabel) {
   const s = eq.stats || {};
   if (key === "total") return accessoryTotal(s);
   return s[key] || 0;
+}
+
+// ---------------- NEW: JESSICA SWORDS TOGGLE ----------------
+
+const SWORD_WEAPONS = new Set([
+  "Cypress stick",
+  "Soldier's sword",
+  "Stone sword",
+  "Copper sword",
+  "Rapier",
+  "Ye Olde Sword of Erdrick",
+  "Steel broadsword",
+  "Templar's sword",
+  "Falcon blade",
+  "Platinum sword",
+  "Dream blade",
+  "Rusty old sword",
+  "Holy silver rapier",
+  "Zombiesbane",
+  "Über falcon blade",
+  "Bastard sword",
+  "Fallen angel rapier",
+  "Zombie slayer",
+  "Dragonsbane",
+  "Double-edged sword",
+  "Über double-edge",
+  "Mercury's rapier",
+  "Miracle sword",
+  "Dragon slayer",
+  "Blizzard blade",
+  "Über miracle sword",
+  "Hell sabre",
+  "Dragovian sword",
+  "Shamshir of light",
+  "Demonsbane",
+  "Liquid metal sword",
+  "Erdrick's sword",
+  "Dragovian king sword"
+]);
+
+function isSwordWeapon(eq) {
+  return !!eq && eq.slot === "weapon" && SWORD_WEAPONS.has(eq.name);
+}
+
+function getJessicaCanEquipSwords() {
+  const raw = localStorage.getItem(STORAGE_KEYS.jessicaSwords);
+  // Default: false (until the ability is unlocked)
+  if (raw === null) return false;
+  return raw === "1" || raw === "true";
+}
+
+function setJessicaCanEquipSwords(v) {
+  localStorage.setItem(STORAGE_KEYS.jessicaSwords, v ? "1" : "0");
+}
+
+function bindJessicaSwordsCheckbox() {
+  const cb = document.getElementById("optimizer-jessica-swords");
+  if (!cb) return;
+
+  cb.checked = getJessicaCanEquipSwords();
+
+  if (!cb.dataset.bound) {
+    cb.dataset.bound = "1";
+    cb.addEventListener("change", () => {
+      setJessicaCanEquipSwords(cb.checked);
+      runOptimizer(false);
+    });
+  }
 }
 
 // ---------------- MAX MIX FILTER (2 or 3) ----------------
@@ -931,7 +1000,10 @@ function exportProgress() {
   const combined = {
     inventory: inventoryState,
     created: createdState,
-    maxMix: getMaxMixItems() // include (safe)
+    maxMix: getMaxMixItems(), // include (safe)
+    // NEW (safe)
+    accessoryPriority: getAccessoryPriority(),
+    jessicaSwords: getJessicaCanEquipSwords()
   };
 
   const json = JSON.stringify(combined, null, 2);
@@ -960,6 +1032,8 @@ function importProgress(file) {
       const inventory = data.inventory || {};
       const created = data.created || {};
       const maxMix = data.maxMix; // may be missing in older files
+      const accessoryPriority = data.accessoryPriority; // optional
+      const jessicaSwords = data.jessicaSwords; // optional
 
       document.querySelectorAll(".inventory-checkbox").forEach(cb => {
         cb.checked = !!inventory[cb.dataset.item];
@@ -973,6 +1047,18 @@ function importProgress(file) {
         setMaxMixItems(maxMix);
         const sel = document.getElementById("max-mix-select");
         if (sel) sel.value = String(maxMix);
+      }
+
+      if (ACCESSORY_PRIORITY_TO_KEY[accessoryPriority]) {
+        setAccessoryPriority(accessoryPriority);
+        const sel = document.getElementById("optimizer-accessory-priority");
+        if (sel) sel.value = accessoryPriority;
+      }
+
+      if (typeof jessicaSwords === "boolean") {
+        setJessicaCanEquipSwords(jessicaSwords);
+        const cb = document.getElementById("optimizer-jessica-swords");
+        if (cb) cb.checked = jessicaSwords;
       }
 
       saveInventory();
@@ -1010,6 +1096,8 @@ function runOptimizer(showAlertIfEmpty = true) {
   }
 
   const accessoryPriority = getAccessoryPriority();
+  const jessicaCanEquipSwords = getJessicaCanEquipSwords();
+
   const slots = ["weapon", "armor", "shield", "helmet", "accessory"];
   const result = {};
 
@@ -1022,7 +1110,13 @@ function runOptimizer(showAlertIfEmpty = true) {
   CHARACTERS.forEach(ch => {
     result[ch] = {};
     slots.forEach(slot => {
-      const candidates = ownedEquip.filter(e => e.slot === slot && equipmentAppliesToCharacter(e, ch));
+      let candidates = ownedEquip.filter(e => e.slot === slot && equipmentAppliesToCharacter(e, ch));
+
+      // NEW: if Jessica can't equip swords yet, exclude swords from her weapon candidates
+      if (ch === "Jessica" && slot === "weapon" && !jessicaCanEquipSwords) {
+        candidates = candidates.filter(e => !isSwordWeapon(e));
+      }
+
       if (candidates.length === 0) {
         result[ch][slot] = null;
       } else {
@@ -1088,6 +1182,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // bind dropdown + filters (uses the HTML dropdown only)
   bindMaxMixSelect();
   bindAccessoryPrioritySelect();
+
+  // NEW: bind Jessica swords checkbox
+  bindJessicaSwordsCheckbox();
 
   // Load saved state
   loadInventoryState();
