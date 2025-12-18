@@ -1,318 +1,326 @@
 /* Basic reset */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 .container {
-    margin-top: 20px;
-    padding: 0 20px 40px 20px;
+  margin-top: 20px;
+  padding: 0 20px 40px 20px;
 }
 
 /* Navbar */
 .navbar {
-    background-color: #333;
-    border: none;
-    margin-bottom: 20px;
+  background-color: #333;
+  border: none;
+  margin-bottom: 20px;
 }
 
 .navbar-inner {
-    padding: 10px 20px;
+  padding: 10px 20px;
 }
 
 .navbar h1 {
-    color: #fff;
-    font-size: 24px;
-    margin: 0;
+  color: #fff;
+  font-size: 24px;
+  margin: 0;
 }
 
 /* Alerts */
 .alert {
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
 }
 
 .alert-info {
-    background-color: #d9edf7;
-    border: 1px solid #bce8f1;
-    color: #31708f;
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+  color: #31708f;
 }
 
 .alert-warning {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
 }
 
 /* Overall progress */
 .overall-progress {
-    padding: 12px 15px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-    font-weight: bold;
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  font-weight: bold;
 }
 
 /* Buttons */
 .btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 .btn-export {
-    background-color: #28a745;
-    color: #fff;
+  background-color: #28a745;
+  color: #fff;
 }
 
 .btn-import {
-    background-color: #007bff;
-    color: #fff;
+  background-color: #007bff;
+  color: #fff;
 }
 
 .import-label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .progress-buttons {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 /* Quick navigation */
 .quick-navigation {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 20px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 .quick-navigation h4 {
-    margin-bottom: 8px;
-    font-size: 15px;
-    font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .quick-navigation ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .quick-navigation li {
-    display: inline;
+  display: inline;
 }
 
 .quick-navigation a {
-    color: #007bff;
-    text-decoration: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s;
-    font-size: 13px;
+  color: #007bff;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 13px;
 }
 
 .quick-navigation a:hover {
-    background-color: #007bff;
-    color: #fff;
+  background-color: #007bff;
+  color: #fff;
 }
 
 /* Layout */
 .layout {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 .panel {
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  padding: 15px;
 }
 
 .inventory-panel {
-    flex: 1;
-    min-width: 260px;
-    max-width: 320px;
+  flex: 1;
+  min-width: 260px;
+  max-width: 320px;
 }
 
 .recipes-panel {
-    flex: 3;
+  flex: 3;
 }
 
 /* Headings */
 h2 {
-    margin-bottom: 10px;
-    font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
 }
 
 h3 {
-    margin-top: 20px;
-    margin-bottom: 8px;
+  margin-top: 20px;
+  margin-bottom: 8px;
 }
 
 /* Small text */
 .small-text {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 10px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
 }
 
 /* Inventory buttons + list */
 .inventory-bulk-buttons {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .inventory-list {
-    max-height: none;
-    overflow-y: visible;
-    border: 1px solid #eee;
-    padding: 8px;
-    background-color: #fafafa;
+  max-height: none;
+  overflow-y: visible;
+  border: 1px solid #eee;
+  padding: 8px;
+  background-color: #fafafa;
 }
 
 .inventory-item {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 13px;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
 }
 
 /* Tables */
 .table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 15px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .table th {
-    text-align: left;
-    background-color: #4CAF50;
-    color: #fff;
-    padding: 8px;
-    font-size: 13px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 8px;
+  font-size: 13px;
 }
 
 .table td {
-    padding: 6px 8px;
-    border-bottom: 1px solid #ddd;
-    font-size: 13px;
-    vertical-align: top;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+  vertical-align: top;
 }
 
 .table-striped tbody tr:nth-child(odd) td,
 .table-striped tbody tr:nth-child(odd) th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .table-hover tbody tr:hover {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .table-responsive {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
 /* Craftable / created styles */
 .craftable-row {
-    background-color: #fffbe5;
+  background-color: #fffbe5;
 }
 
 /* FIX: ensure craftable highlight shows even with table-striped */
 .table tbody tr.craftable-row td {
-    background-color: #fffbe5 !important;
+  background-color: #fffbe5 !important;
 }
 
 .table-hover tbody tr.craftable-row:hover td {
-    background-color: #fffbe5 !important;
+  background-color: #fffbe5 !important;
 }
 
 .created-row {
-    background-color: #c7f7c1 !important;
+  background-color: #c7f7c1 !important;
 }
 
 /* Keep created highlight visible even with striped/hover */
 .table tbody tr.created-row td {
-    background-color: #c7f7c1 !important;
+  background-color: #c7f7c1 !important;
 }
 
 .table-hover tbody tr.created-row:hover td {
-    background-color: #c7f7c1 !important;
+  background-color: #c7f7c1 !important;
 }
 
 .craftable-yes {
-    font-weight: bold;
-    color: #155724;
+  font-weight: bold;
+  color: #155724;
 }
 
 .craftable-no {
-    color: #888;
+  color: #888;
 }
 
 /* Created list */
 .created-list {
-    list-style: disc;
-    padding-left: 20px;
-    font-size: 13px;
+  list-style: disc;
+  padding-left: 20px;
+  font-size: 13px;
 }
 
 .created-list li {
-    margin-bottom: 3px;
+  margin-bottom: 3px;
 }
 
 /* Recipe filters */
 .recipe-filters {
-    margin: 8px 0 12px 0;
-    font-size: 13px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 15px;
+  margin: 8px 0 12px 0;
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
 }
 
 .recipe-filters select {
-    margin-left: 6px;
+  margin-left: 6px;
 }
 
 /* Optimizer */
 .optimizer-panel {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 .optimizer-output {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .optimizer-output .table {
-    margin-top: 10px;
+  margin-top: 10px;
+}
+
+/* NEW: keep the optimizer controls on one line when possible */
+.optimizer-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
 }
 
 /* Responsive */
 @media (max-width: 900px) {
-    .layout {
-        flex-direction: column;
-    }
+  .layout {
+    flex-direction: column;
+  }
 
-    .inventory-panel {
-        max-width: none;
-    }
+  .inventory-panel {
+    max-width: none;
+  }
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
