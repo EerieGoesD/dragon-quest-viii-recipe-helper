@@ -706,6 +706,201 @@ const SWORD_WEAPONS = new Set([
   "Dragovian king sword"
 ]);
 
+// ---------------- NEW: WEAPON CATEGORY FILTERS ----------------
+
+const BOOMERANG_WEAPONS = new Set([
+  "Boomerang",
+  "Edged boomerang",
+  "Reinforced boomerang",
+  "Razor wing boomerang",
+  "Swallowtail",
+  "Flametang boomerang",
+  "Black Buzzard",
+  "Metal wing boomerang"
+]);
+
+const SPEAR_WEAPONS = new Set([
+  "Golden gar",
+  "Iron lance",
+  "Long spear",
+  "Holy lance",
+  "Battle fork",
+  "Partisan",
+  "Sandstorm spear",
+  "Demon spear",
+  "Hero spear",
+  "Metal king spear"
+]);
+
+const AXE_WEAPONS = new Set([
+  "Stone axe",
+  "Golden axe",
+  "Iron axe",
+  "Battle axe",
+  "Bandit axe",
+  "Moon axe",
+  "King axe",
+  "Bad axe",
+  "Conqueror's axe"
+]);
+
+const CLUB_WEAPONS = new Set([
+  "Oaken club",
+  "Giant mallet",
+  "Honking hammer",
+  "Sledgehammer",
+  "War hammer",
+  "Über war hammer",
+  "Megaton hammer"
+]);
+
+const SCYTHE_WEAPONS = new Set([
+  "Candy cane",
+  "Farmer's scythe",
+  "Steel scythe",
+  "Hell scythe",
+  "Bardiche of binding",
+  "Heavy hatchet"
+]);
+
+const KNIFE_WEAPONS = new Set([
+  "Poison needle",
+  "Bronze knife",
+  "Dagger",
+  "Poison moth knife",
+  "Falcon knife",
+  "Assassin's dagger",
+  "Eagle dagger",
+  "Icicle dirk",
+  "Imp knife",
+  "Sword breaker",
+  "Dread dagger"
+]);
+
+const WHIP_WEAPONS = new Set([
+  "Leather whip",
+  "Thorn whip",
+  "Snakeskin whip",
+  "Chain whip",
+  "Dragontail whip",
+  "Spiked steel whip",
+  "Wizardly whip",
+  "Demon whip",
+  "Scourge whip",
+  "Gringham whip"
+]);
+
+const STAFF_WEAPONS = new Set([
+  "Wizard's staff",
+  "Slime stick",
+  "Lightning staff",
+  "Magma staff",
+  "Rune staff",
+  "Staff of divine wrath",
+  "Staff of antimagic",
+  "Staff of resurrection",
+  "Magical mace"
+]);
+
+const BOW_WEAPONS = new Set([
+  "Short bow",
+  "Hunter's bow",
+  "Eros' bow",
+  "Cheiron's bow",
+  "Night sniper",
+  "Great bow",
+  "Odin's bow"
+]);
+
+const FLAIL_WEAPONS = new Set([
+  "Flail of fury",
+  "Flail of destruction"
+]);
+
+const WEAPON_CATEGORY_SETS = [
+  { key: "Swords", set: SWORD_WEAPONS },
+  { key: "Boomerangs", set: BOOMERANG_WEAPONS },
+  { key: "Spears", set: SPEAR_WEAPONS },
+  { key: "Axes", set: AXE_WEAPONS },
+  { key: "Clubs", set: CLUB_WEAPONS },
+  { key: "Scythes", set: SCYTHE_WEAPONS },
+  { key: "Knives", set: KNIFE_WEAPONS },
+  { key: "Whips", set: WHIP_WEAPONS },
+  { key: "Staves", set: STAFF_WEAPONS },
+  { key: "Bows", set: BOW_WEAPONS },
+  { key: "Flails", set: FLAIL_WEAPONS }
+];
+
+// In-memory filter state (default: all enabled)
+const weaponFilters = {};
+
+function initWeaponFilters() {
+  CHARACTERS.forEach(ch => {
+    weaponFilters[ch] = weaponFilters[ch] || {};
+    WEAPON_CATEGORY_SETS.forEach(cat => {
+      if (typeof weaponFilters[ch][cat.key] !== "boolean") {
+        weaponFilters[ch][cat.key] = true;
+      }
+    });
+  });
+}
+
+function getWeaponCategory(eq) {
+  if (!eq || eq.slot !== "weapon") return null;
+  for (const cat of WEAPON_CATEGORY_SETS) {
+    if (cat.set.has(eq.name)) return cat.key;
+  }
+  return null;
+}
+
+function isWeaponAllowedForCharacter(ch, eq) {
+  const cat = getWeaponCategory(eq);
+  if (!cat) return true; // unknown weapon type -> allow
+  const v = weaponFilters[ch]?.[cat];
+  return v !== false;
+}
+
+function buildWeaponFilterUI() {
+  const container = document.getElementById("optimizer-weapon-filters");
+  if (!container) return;
+
+  if (container.dataset.built) return;
+  container.dataset.built = "1";
+
+  initWeaponFilters();
+
+  CHARACTERS.forEach(ch => {
+    const row = document.createElement("div");
+    row.className = "weapon-filter-row";
+
+    const name = document.createElement("div");
+    name.className = "weapon-filter-name";
+    name.textContent = ch + ":";
+    row.appendChild(name);
+
+    WEAPON_CATEGORY_SETS.forEach(cat => {
+      const label = document.createElement("label");
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = true;
+      cb.dataset.character = ch;
+      cb.dataset.weaponCategory = cat.key;
+
+      cb.addEventListener("change", () => {
+        weaponFilters[ch][cat.key] = cb.checked;
+        runOptimizer(false);
+      });
+
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(" " + cat.key));
+      row.appendChild(label);
+    });
+
+    container.appendChild(row);
+  });
+}
+
 function isSwordWeapon(eq) {
   return !!eq && eq.slot === "weapon" && SWORD_WEAPONS.has(eq.name);
 }
@@ -1112,9 +1307,14 @@ function runOptimizer(showAlertIfEmpty = true) {
     slots.forEach(slot => {
       let candidates = ownedEquip.filter(e => e.slot === slot && equipmentAppliesToCharacter(e, ch));
 
-      // NEW: if Jessica can't equip swords yet, exclude swords from her weapon candidates
+      // if Jessica can't equip swords yet, exclude swords from her weapon candidates
       if (ch === "Jessica" && slot === "weapon" && !jessicaCanEquipSwords) {
         candidates = candidates.filter(e => !isSwordWeapon(e));
+      }
+
+      // weapon category filters per character
+      if (slot === "weapon") {
+        candidates = candidates.filter(e => isWeaponAllowedForCharacter(ch, e));
       }
 
       if (candidates.length === 0) {
@@ -1183,8 +1383,11 @@ document.addEventListener("DOMContentLoaded", () => {
   bindMaxMixSelect();
   bindAccessoryPrioritySelect();
 
-  // NEW: bind Jessica swords checkbox
+  // bind Jessica swords checkbox
   bindJessicaSwordsCheckbox();
+
+  // build weapon filters UI
+  buildWeaponFilterUI();
 
   // Load saved state
   loadInventoryState();
