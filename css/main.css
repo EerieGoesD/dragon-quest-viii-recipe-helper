@@ -302,12 +302,35 @@ h3 {
   margin-top: 10px;
 }
 
-/* NEW: keep the optimizer controls on one line when possible */
+/* keep the optimizer controls on one line when possible */
 .optimizer-options {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 14px;
+}
+
+/* optimizer weapon filters */
+.optimizer-weapon-filters {
+  margin: 8px 0 10px 0;
+}
+
+.optimizer-weapon-filters .weapon-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.optimizer-weapon-filters .weapon-filter-name {
+  font-weight: bold;
+  min-width: 70px;
+  font-size: 13px;
+}
+
+.optimizer-weapon-filters label {
+  font-size: 13px;
 }
 
 /* Responsive */
