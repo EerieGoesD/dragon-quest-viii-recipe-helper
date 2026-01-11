@@ -25,6 +25,7 @@ Created by [EERIE](https://linktr.ee/eeriegoesd).
 ## Feedback
 - Email: [eeriegoesd@gmail.com](mailto:eeriegoesd@gmail.com)
 - Steam: https://steamcommunity.com/profiles/76561198217097379/
+- Buy Me A Coffee: https://buymeacoffee.com/eeriegoesd
 
 ## Other Work
 - YouTube: https://www.youtube.com/eeriegoesd
